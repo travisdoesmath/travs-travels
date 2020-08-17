@@ -15,7 +15,7 @@ const timelineChart = new TimelineChart({
 })
 
 let worldmap;
-d3.json('/static/json/land-50m.json').then(m => {
+d3.json('./static/json/land-50m.json').then(m => {
     worldmap = new GeoMap({
         element: document.querySelector('#map'),
         data: data,
