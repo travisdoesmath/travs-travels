@@ -69,17 +69,22 @@ class GeoMap {
     }
 
     drawMarkers() {
-        let markers = this.plot.selectAll('.markers')
+        let markers = this.plot.selectAll('.marker')
             .data(this.data)
+            .enter()
+            .append('g')
+            .attr('class', 'marker')
+            .attr('location', d => d.title)
+            
 
-        markers
+        markers.selectAll('circle').data(d => d.locations)
             .enter()
             .append('circle')
-            .merge(markers)
-            .attr('r', 7)
-            .attr('cx', d => this.projection([d.location.longitude, d.location.latitude])[0])
-            .attr('cy', d => this.projection([d.location.longitude, d.location.latitude])[1])
-            .attr('location', d => d.title)
+            .attr('r', 5)
+            .attr('cx', d => this.projection([d.longitude, d.latitude])[0])
+            .attr('cy', d => this.projection([d.longitude, d.latitude])[1])
+            .attr('fill', 'darkred')
+            
 
     }
 }
