@@ -210,7 +210,7 @@ var data = [
         ]
     },
     {
-        title: 'Trav in a Van',
+        title: '#vanlife',
         start: '2017-06-10',
         end: '2017-10-04',
         locations: [
