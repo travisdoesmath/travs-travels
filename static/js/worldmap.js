@@ -9,7 +9,7 @@ class GeoMap {
         this.draw();
     }
 
-    draw() {
+    draw(highlight = '') {
         this.width = this.element.offsetWidth;
         this.height = this.width * 0.7;
         this.margin = {
@@ -30,7 +30,7 @@ class GeoMap {
             .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
 
         this.drawMap()
-        this.drawMarkers()
+        this.drawMarkers(highlight)
     }
 
     drawMap() {
@@ -68,23 +68,36 @@ class GeoMap {
 
     }
 
-    drawMarkers() {
+    drawMarkers(highlight) {
         let markers = this.plot.selectAll('.marker')
             .data(this.data)
             .enter()
             .append('g')
             .attr('class', 'marker')
             .attr('location', d => d.title)
-            
+        
+        console.log('highlight', highlight)
 
-        markers.selectAll('circle').data(d => d.locations)
+        // markers.selectAll('.highlight-marker').data(d => d.locations.map(x => { return { title: d.title, location: {latitude: x.latitude, longitude: x.longitude} }; }))
+        //     .enter()
+        //     .append('circle')
+        //     .attr('class', 'highlight-marker')
+        //     .attr('r', d => d.title == highlight ? 8 : 0)
+        //     .attr('cx', d => this.projection([d.location.longitude, d.location.latitude])[0])
+        //     .attr('cy', d => this.projection([d.location.longitude, d.location.latitude])[1])
+        //     .attr('fill', 'darkred')
+
+        markers.selectAll('.marker').data(d => d.locations.map(x => { return { title: d.title, location: {latitude: x.latitude, longitude: x.longitude} }; }))
             .enter()
             .append('circle')
-            .attr('r', 5)
-            .attr('cx', d => this.projection([d.longitude, d.latitude])[0])
-            .attr('cy', d => this.projection([d.longitude, d.latitude])[1])
-            .attr('fill', 'darkred')
-            
+            .attr('class', 'marker')
+            .attr('r', d => d.title == highlight ? 5 : 4)
+            .attr('cx', d => this.projection([d.location.longitude, d.location.latitude])[0])
+            .attr('cy', d => this.projection([d.location.longitude, d.location.latitude])[1])
+            .attr('fill', d => d.title == highlight ? 'white' : 'darkred')
+            .attr('stroke', d => d.title == highlight ? 'darkred' : '')
+            .attr('stroke-width', d => d.title == highlight ? 2  : 0)
+
 
     }
 }
